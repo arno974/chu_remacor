@@ -9,50 +9,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>289</height>
+    <width>477</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CHU - Remacor</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="2">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="2" column="0">
-      <widget class="QgsFieldComboBox" name="qFieldsLayerRepartition"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QgsMapLayerComboBox" name="qLayerAnalyseRepartitionCas"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QgsMapLayerComboBox" name="qLayerListCas"/>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Champs de population</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Couche d'analyse de de la répartition</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
+  <layout class="QFormLayout" name="formLayout_2">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Couche des cas</string>
@@ -63,11 +30,244 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="buddy">
+        <cstring>qLayerListCas</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Couche d'analyse de de la répartition</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>qLayerAnalyseRepartitionCas</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Champs de calcul de prevalence</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>qFieldsLayerRepartition</cstring>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="3" column="2">
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QgsMapLayerComboBox" name="qLayerListCas"/>
+     </item>
+     <item>
+      <widget class="QgsMapLayerComboBox" name="qLayerAnalyseRepartitionCas"/>
+     </item>
+     <item>
+      <widget class="QgsFieldComboBox" name="qFieldsLayerRepartition"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="qCheckBoxCreateFilter">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Ajouter un filtre</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="qFilterParams">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Paramètre du filtre</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="1" column="0">
+       <widget class="QLabel" name="fieldFilterLabel">
+        <property name="text">
+         <string>Champs de filtre</string>
+        </property>
+        <property name="buddy">
+         <cstring>qFieldsFilter</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QgsFieldComboBox" name="qFieldsFilter"/>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QGroupBox" name="groupFilterRadioButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QRadioButton" name="rbLower">
+           <property name="text">
+            <string>&lt;</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroupFilter</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbEqual">
+           <property name="text">
+            <string>=</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroupFilter</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbGreater">
+           <property name="text">
+            <string>&gt;</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroupFilter</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="fieldFilterValueLabel">
+        <property name="text">
+         <string>Valeur du filtre</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="qTextFilterValue"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="qCheckBoxCreateMap">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Générer une carte</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="qMapParams">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Paramètres de la carte</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="testLabel_2">
+        <property name="text">
+         <string>Carte</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="testLabel">
+        <property name="text">
+         <string>Titre</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>qMapTitle</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QgsFileWidget" name="qMapFileSave">
+        <property name="storageMode">
+         <enum>QgsFileWidget::GetDirectory</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="qComboBoxMapFormat">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>PDF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Image</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPlainTextEdit" name="qMapTitle"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Format</string>
+        </property>
+        <property name="buddy">
+         <cstring>qComboBoxMapFormat</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="qPrintClusterLayer">
+        <property name="text">
+         <string>Imprimer les clusters</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="1">
     <widget class="QDialogButtonBox" name="button_box">
      <property name="enabled">
       <bool>true</bool>
@@ -77,39 +277,6 @@
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="qCheckBoxCreateMap">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string>Générer une carte</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" colspan="2">
-    <widget class="QgsFileWidget" name="qMapFileSave">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>10777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="storageMode">
-      <enum>QgsFileWidget::SaveFile</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="testLabel">
-     <property name="text">
-      <string>TextLabel</string>
      </property>
     </widget>
    </item>
@@ -132,6 +299,16 @@
    <header>qgsmaplayercombobox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>qLayerListCas</tabstop>
+  <tabstop>qLayerAnalyseRepartitionCas</tabstop>
+  <tabstop>qFieldsLayerRepartition</tabstop>
+  <tabstop>qCheckBoxCreateFilter</tabstop>
+  <tabstop>qFieldsFilter</tabstop>
+  <tabstop>qCheckBoxCreateMap</tabstop>
+  <tabstop>qMapTitle</tabstop>
+  <tabstop>qComboBoxMapFormat</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -141,8 +318,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>333</x>
-     <y>255</y>
+     <x>467</x>
+     <y>680</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -157,8 +334,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>333</x>
-     <y>255</y>
+     <x>467</x>
+     <y>680</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -167,18 +344,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>qCheckBoxCreateMap</sender>
-   <signal>clicked()</signal>
+   <sender>qFieldsLayerRepartition</sender>
+   <signal>currentIndexChanged(int)</signal>
    <receiver>ChuRemacorDialogBase</receiver>
-   <slot>changeFilePathState()</slot>
+   <slot>checkComboBox()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>235</y>
+     <x>466</x>
+     <y>96</y>
     </hint>
     <hint type="destinationlabel">
-     <x>56</x>
-     <y>-28</y>
+     <x>462</x>
+     <y>174</y>
     </hint>
    </hints>
   </connection>
@@ -186,15 +363,15 @@
    <sender>qLayerAnalyseRepartitionCas</sender>
    <signal>layerChanged(QgsMapLayer*)</signal>
    <receiver>ChuRemacorDialogBase</receiver>
-   <slot>addFields()</slot>
+   <slot>addRepartitionFields()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>580</x>
-     <y>125</y>
+     <x>466</x>
+     <y>65</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>
-     <y>-7</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -205,11 +382,11 @@
    <slot>checkComboBox()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>545</x>
-     <y>54</y>
+     <x>466</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>657</x>
+     <x>462</x>
      <y>59</y>
     </hint>
    </hints>
@@ -221,35 +398,89 @@
    <slot>checkComboBox()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>551</x>
-     <y>115</y>
+     <x>466</x>
+     <y>65</y>
     </hint>
     <hint type="destinationlabel">
-     <x>663</x>
+     <x>462</x>
      <y>113</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>qFieldsLayerRepartition</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <sender>qCheckBoxCreateMap</sender>
+   <signal>clicked()</signal>
    <receiver>ChuRemacorDialogBase</receiver>
-   <slot>checkComboBox()</slot>
+   <slot>enableCreateMap()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>530</x>
-     <y>173</y>
+     <x>57</x>
+     <y>345</y>
     </hint>
     <hint type="destinationlabel">
-     <x>612</x>
-     <y>174</y>
+     <x>0</x>
+     <y>131</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>qCheckBoxCreateFilter</sender>
+   <signal>clicked()</signal>
+   <receiver>ChuRemacorDialogBase</receiver>
+   <slot>enableCreateFilter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>45</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>qLayerListCas</sender>
+   <signal>layerChanged(QgsMapLayer*)</signal>
+   <receiver>ChuRemacorDialogBase</receiver>
+   <slot>addFilterFields()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>30</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>qFieldsFilter</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>ChuRemacorDialogBase</receiver>
+   <slot>setFieldFilterValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>191</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>changeFilePathState()</slot>
-  <slot>addFields()</slot>
+  <slot>addFilterFields()</slot>
   <slot>checkComboBox()</slot>
+  <slot>enableCreateMap()</slot>
+  <slot>enableCreateFilter()</slot>
+  <slot>addRepartitionFields()</slot>
+  <slot>setFieldFilterValues()</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="buttonGroupFilter"/>
+ </buttongroups>
 </ui>

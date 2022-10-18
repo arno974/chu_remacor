@@ -40,7 +40,7 @@ from .resources import *
 from .churemacor_dialog import ChuRemacorDialog
 import os.path
 
-from .logic import AnalyseCasSimple
+from .logic import ComputePrevalence
 
 class ChuRemacor:
     """QGIS Plugin Implementation."""
@@ -213,10 +213,32 @@ class ChuRemacor:
 
         # See if OK was pressed
         if result:
-            AnalyseCasSimple(
+            QgsMessageLog.logMessage(
+                'Button | {0} | {1} | {2}'.format(
+                    str(self.dlg.buttonGroupFilter.checkedId()),
+                    str(self.dlg.buttonGroupFilter.checkedButton().text()),
+                    str(self.dlg.buttonGroupFilter.checkedButton().isChecked()),
+                )
+                , 'CHU Remacor'
+                , level=Qgis.Info)
+       
+            ComputePrevalence(
+                self.iface,
+                #Data Params
                 self.dlg.qLayerListCas.currentLayer(),
                 self.dlg.qLayerAnalyseRepartitionCas.currentLayer(),
-                self.dlg.qFieldsLayerRepartition.currentField()
+                self.dlg.qFieldsLayerRepartition.currentField(),
+                #Filter Params
+                self.dlg.qCheckBoxCreateFilter.checkState(),
+                self.dlg.qFieldsFilter.currentField(),
+                self.dlg.buttonGroupFilter.checkedButton().text(),
+                self.dlg.qTextFilterValue.text(),
+                #Map Params
+                self.dlg.qCheckBoxCreateMap.checkState(),
+                self.dlg.qMapFileSave.filePath(),
+                self.dlg.qMapTitle.toPlainText(),
+                self.dlg.qPrintClusterLayer.checkState(),
+                self.dlg.qComboBoxMapFormat.currentText()
             )
             QgsMessageLog.logMessage("Your plugin code has been executed correctly", 'CHU Remacor', level=Qgis.Info)
             

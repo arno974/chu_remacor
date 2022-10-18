@@ -1,2 +1,3 @@
 #! python3 
-from .analyse_cas_simple import AnalyseCasSimple  
+from .compute_prevalence import ComputePrevalence  
+from .map_tools import MapTools  

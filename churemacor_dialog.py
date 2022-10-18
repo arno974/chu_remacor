@@ -25,13 +25,14 @@
 import os
 
 from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
+from qgis.PyQt import QtWidgets, QtCore, QtGui
 
 from qgis.PyQt.QtWidgets import(
     QDialog,
+    QCompleter
 )
 
-from qgis.core import QgsMessageLog, QgsMapLayerProxyModel
+from qgis.core import QgsMessageLog, QgsMapLayerProxyModel, QgsFieldProxyModel
 
 from qgis.core import (
     QgsMessageLog,
@@ -56,17 +57,41 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
         self.setupUi(self)
         self.qLayerListCas.setFilters(QgsMapLayerProxyModel.PointLayer)
         self.qLayerAnalyseRepartitionCas.setFilters(QgsMapLayerProxyModel.PolygonLayer)
+        self.qFieldsLayerRepartition.setFilters(QgsFieldProxyModel.Numeric)
         self.button_box.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
+        self.qComboBoxMapFormat.setCurrentIndex(0)
         
-    def changeFilePathState(self):        
+    def enableCreateMap(self):        
         if self.qCheckBoxCreateMap.isChecked() :
-            self.qMapFileSave.setEnabled(True);
+            self.qMapParams.setEnabled(True);
         else :
-            self.qMapFileSave.setEnabled(False);
+            self.qMapParams.setEnabled(False);
         return
 
-    def addFields(self, layer):
-        self.qFieldsLayerRepartition.setLayer(layer)
+    def enableCreateFilter(self):        
+        if self.qCheckBoxCreateFilter.isChecked() :
+            self.qFilterParams.setEnabled(True);
+        else :
+            self.qFilterParams.setEnabled(False);
+        return
+
+    def addRepartitionFields(self, layer):
+        self.qFieldsLayerRepartition.setLayer(layer)   
+        return
+
+    def setFieldFilterValues(self):
+        idx = self.qLayerListCas.currentLayer().fields().indexFromName(
+            self.qFieldsFilter.currentField()
+        )
+        values = self.qLayerListCas.currentLayer().uniqueValues(idx)      
+        
+        completer = QCompleter(values, self)
+        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        self.qTextFilterValue.setCompleter(completer)
+        return        
+
+    def addFilterFields(self, layer):
+        self.qFieldsFilter.setLayer(layer)
         return
 
     def checkComboBox(self):
@@ -75,6 +100,20 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
                 and self.qLayerAnalyseRepartitionCas.currentIndex() !=-1 
                 and self.qFieldsLayerRepartition.currentIndex() !=-1) :
             self.button_box.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
+            self.qCheckBoxCreateMap.setEnabled(True)
+            self.qComboBoxMapFormat.setEnabled(True)
+            self.qCheckBoxCreateFilter.setEnabled(True)
+            self.groupFilterRadioButton.setEnabled(True)
+
+    def completion(word_list, widget, i=True):
+        """ Autocompletion of sender and subject """
+        word_set = set(word_list)
+        completer = QCompleter(word_set)
+        if i:
+            completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        else:
+            completer.setCaseSensitivity(QtCore.Qt.CaseSensitive)
+        widget.setCompleter(completer)
 
 
 
