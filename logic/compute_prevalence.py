@@ -52,7 +52,7 @@ class ComputePrevalence:
 
         if finalMap and not mapCluster:
             iface.layerTreeView().setLayerVisible(self.layerCas, False)
-            
+
         if finalMap :
             self.mapTools.createFinalMap(mapPath, mapTitle, mapFormat)  
 
@@ -113,12 +113,11 @@ class ComputePrevalence:
             Filter dataset and add the filter result to the map
         """
         try:
-            match compareFilter:
-                case "=":
+            if compareFilter == "=":
                     compareFilter = 0
-                case ">":
+            elif compareFilter == ">":
                     compareFilter = 2
-                case "<":
+            else : #"<"
                     compareFilter = 4
 
             params = {
