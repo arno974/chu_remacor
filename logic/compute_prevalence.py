@@ -36,7 +36,7 @@ class ComputePrevalence:
                 self.filterDataSet(self.layerCas, filter['fieldFilter'], filter['compareFilter'], filter['valueFilter'])             
             self.mapTools.addLayerToMap(self.layerCas, layerName[:-2],'Cas filtrés')
         else:
-            self.layerCas = self.layerCas.clone()
+            #self.layerCas = self.layerCas.clone()
             self.mapTools.addLayerToMap(self.layerCas, "non filtré",'Cas')
 
         self.countPointInPolygon()
