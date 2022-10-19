@@ -17,7 +17,7 @@ from .map_tools import MapTools
 class ComputePrevalence:
 
     def __init__(self, iface: QgisInterface, layerCas: QgsVectorLayer, layerRepartition: QgsVectorLayer, FieldRepartition: QgsField, 
-                    addFilter, fieldFilter, compareFilter, valueFilter,
+                    dataFilters,
                     finalMap, mapPath, mapTitle, mapCluster, mapFormat):
         # sub-modules
         self.mapTools = MapTools(iface, 'Analyse Prevalence')
@@ -29,9 +29,12 @@ class ComputePrevalence:
         self.result_layer = None
         self.fieldNbPoints = 'nb_points'
 
-        if addFilter:
-            self.filterDataSet(self.layerCas, fieldFilter, compareFilter, valueFilter)
-            self.mapTools.addLayerToMap(self.layerCas, u"{0}{1}'{2}'".format(fieldFilter, compareFilter, valueFilter),'Cas filtrés')
+        if len(dataFilters)>0:
+            layerName = ''
+            for filter in dataFilters:
+                layerName += '{0}{1}{2} + '.format(filter['fieldFilter'], filter['compareFilter'], filter['valueFilter']) 
+                self.filterDataSet(self.layerCas, filter['fieldFilter'], filter['compareFilter'], filter['valueFilter'])             
+            self.mapTools.addLayerToMap(self.layerCas, layerName[:-2],'Cas filtrés')
         else:
             self.layerCas = self.layerCas.clone()
             self.mapTools.addLayerToMap(self.layerCas, "non filtré",'Cas')
@@ -45,11 +48,11 @@ class ComputePrevalence:
             self.result_layer,
             'Prevalence',
             self.FieldRepartition
-        )    
+        )
 
-        if not mapCluster:
+        if finalMap and not mapCluster:
             iface.layerTreeView().setLayerVisible(self.layerCas, False)
-
+            
         if finalMap :
             self.mapTools.createFinalMap(mapPath, mapTitle, mapFormat)  
 

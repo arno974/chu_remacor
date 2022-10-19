@@ -191,7 +191,14 @@ class ChuRemacor:
         self.dlg.qLayerListCas.setCurrentIndex(-1)
         self.dlg.qLayerAnalyseRepartitionCas.setCurrentIndex(-1)
         self.dlg.qFieldsLayerRepartition.setCurrentIndex(-1)
-
+        self.dlg.qCheckBoxCreateFilter.setChecked(False)
+        self.dlg.qCheckBoxCreateMap.setChecked(False)
+        self.dlg.qListFilters.clear()
+        self.dlg.dataFilters.clear()        
+        self.dlg.qFilterParams.setEnabled(False)
+        self.dlg.qMapParams.setEnabled(False)
+        self.dlg.qTextFilterValue.clear() 
+ 
     def run_analyse_cas_simple(self):
         """Run method that performs all the real work"""
 
@@ -229,10 +236,7 @@ class ChuRemacor:
                 self.dlg.qLayerAnalyseRepartitionCas.currentLayer(),
                 self.dlg.qFieldsLayerRepartition.currentField(),
                 #Filter Params
-                self.dlg.qCheckBoxCreateFilter.checkState(),
-                self.dlg.qFieldsFilter.currentField(),
-                self.dlg.buttonGroupFilter.checkedButton().text(),
-                self.dlg.qTextFilterValue.text(),
+                self.dlg.dataFilters,
                 #Map Params
                 self.dlg.qCheckBoxCreateMap.checkState(),
                 self.dlg.qMapFileSave.filePath(),

@@ -25,21 +25,14 @@
 import os
 
 from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets, QtCore, QtGui
+from qgis.PyQt import QtWidgets, QtCore
 
-from qgis.PyQt.QtWidgets import(
-    QDialog,
-    QCompleter
+from qgis.PyQt.QtWidgets import(    
+    QCompleter,
+    QListWidgetItem
 )
 
-from qgis.core import QgsMessageLog, QgsMapLayerProxyModel, QgsFieldProxyModel
-
-from qgis.core import (
-    QgsMessageLog,
-    Qgis
-) 
-
-from qgis.gui import QgsMessageBar
+from qgis.core import QgsMapLayerProxyModel, QgsFieldProxyModel, NULL
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -54,7 +47,9 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
         # self.<objectname>, and you can use autoconnect slots - see
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect    
+        self.dataFilters = []
         self.setupUi(self)
+        self.qListFilters.hide()
         self.qLayerListCas.setFilters(QgsMapLayerProxyModel.PointLayer)
         self.qLayerAnalyseRepartitionCas.setFilters(QgsMapLayerProxyModel.PolygonLayer)
         self.qFieldsLayerRepartition.setFilters(QgsFieldProxyModel.Numeric)
@@ -70,9 +65,11 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def enableCreateFilter(self):        
         if self.qCheckBoxCreateFilter.isChecked() :
-            self.qFilterParams.setEnabled(True);
+            self.qFilterParams.setEnabled(True);            
         else :
             self.qFilterParams.setEnabled(False);
+            self.qListFilters.clear()
+            self.dataFilters.clear()
         return
 
     def addRepartitionFields(self, layer):
@@ -83,16 +80,52 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
         idx = self.qLayerListCas.currentLayer().fields().indexFromName(
             self.qFieldsFilter.currentField()
         )
-        values = self.qLayerListCas.currentLayer().uniqueValues(idx)      
+        values = self.qLayerListCas.currentLayer().uniqueValues(idx)
+        cleanValues = []
+        # RuntimeError: Set changed size during iteration - so use copy
+        for v in values.copy():
+            if v is None or v == NULL :
+                values.remove(v)
+            elif type(v) == QtCore.QVariant:
+                v = str(v.value())
+                cleanValues.append(v)
+            else :
+                v = str(v)
+                cleanValues.append(v)        
         
-        completer = QCompleter(values, self)
+        completer = QCompleter(self)
+        
+        model = QtCore.QStringListModel()
+        model.setStringList(cleanValues)
+        completer.setModel(model) 
+
+        completer.setCompletionMode(QCompleter.UnfilteredPopupCompletion)      
         completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        completer.ModelSorting(QCompleter.CaseSensitivelySortedModel)
+
         self.qTextFilterValue.setCompleter(completer)
         return        
 
     def addFilterFields(self, layer):
         self.qFieldsFilter.setLayer(layer)
         return
+
+    def addNewFilter(self):
+        self.qListFilters.show()
+        fieldFilter = self.qFieldsFilter.currentField()
+        compareFilter = self.buttonGroupFilter.checkedButton().text()
+        valueFilter = self.qTextFilterValue.text()
+        filter = {
+            'fieldFilter' : fieldFilter,
+            'compareFilter' : compareFilter,
+            'valueFilter' : valueFilter
+        }
+        self.dataFilters.append(filter)
+        item = QListWidgetItem("{} {} {}".format(fieldFilter, compareFilter, valueFilter))
+        self.qListFilters.addItem(item)
+        self.qTextFilterValue.clear()
+        return
+
 
     def checkComboBox(self):
         """Check to see that all fields have been entered."""
@@ -104,16 +137,6 @@ class ChuRemacorDialog(QtWidgets.QDialog, FORM_CLASS):
             self.qComboBoxMapFormat.setEnabled(True)
             self.qCheckBoxCreateFilter.setEnabled(True)
             self.groupFilterRadioButton.setEnabled(True)
-
-    def completion(word_list, widget, i=True):
-        """ Autocompletion of sender and subject """
-        word_set = set(word_list)
-        completer = QCompleter(word_set)
-        if i:
-            completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        else:
-            completer.setCaseSensitivity(QtCore.Qt.CaseSensitive)
-        widget.setCompleter(completer)
 
 
 
